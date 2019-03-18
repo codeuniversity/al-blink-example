@@ -1,28 +1,25 @@
+#include <RH_ASK.h>
+#include <SPI.h> // Not actualy used but needed to compile
 
-//simple Tx on pin D12
-//Written By : Mohannad Rawashdeh
-// 3:00pm , 13/6/2013
-//http://www.genotronex.com/
-//..................................
-#include <VirtualWire.h>
+RH_ASK driver(2000, 11, 12); // Setting RX pin (receiver) to 2 and TX pin (transmitter) to 3
 
 void setup()
 {
-  // vw_set_ptt_inverted(true); // Required for DR3100
-  vw_set_rx_pin(12);
-  vw_setup(4000); // Bits per sec
-  pinMode(7, OUTPUT);
-  digitalWrite(7, LOW);
-  vw_rx_start(); // Start the receiver PLL running
+  Serial.begin(9600); // Debugging only
+  if (!driver.init())
+    Serial.println("init failed");
+  driver.setModeRx();
 }
+
 void loop()
 {
-  uint8_t buf[1];
-  uint8_t buflen = 1;
-
-  if (vw_get_message(buf, &buflen)) // Non-blocking
+  uint8_t buf[12];
+  uint8_t buflen = sizeof(buf);
+  if (driver.recv(buf, &buflen)) // Non-blocking
   {
-    digitalWrite(7, HIGH);
-    Serial.println(buf[0]);
+    int i;
+    // Message with a good checksum received, dump it.
+    Serial.print("Message: ");
+    Serial.println((char *)buf);
   }
 }

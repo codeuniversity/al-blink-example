@@ -4,7 +4,7 @@ deploy:
 
 deploy-transmitter:
 	scp Transmitter.ino pi@10.0.5.63:~/Arduino/Transmitter/
-	ssh pi@10.0.5.63 "cd Arduino/Transmitter; amake -u uno Transmitter.ino /dev/ttyACM0"
+	ssh pi@10.0.5.63 "cd Arduino/Transmitter; amake -u uno Transmitter.ino /dev/ttyACM2"
 
 deploy-receiver:
 	scp Receiver.ino pi@10.0.5.63:~/Arduino/Receiver/
