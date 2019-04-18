@@ -1,6 +1,6 @@
-int motorPin1=2;
-int motorPin2=3;
-int wait=10; //ms
+int motorPin1 = 2;
+int motorPin2 = 3;
+int wait = 10; //ms
 
 void setup()
 {
@@ -8,36 +8,47 @@ void setup()
   pinMode(motorPin2, OUTPUT);
 }
 
-void stopMotor()
+void motorControl(int pin1, int pin2)
 {
-  digitalWrite(motorPin1, LOW);
-  digitalWrite(motorPin2, LOW);
+  digitalWrite(motorPin1, pin1);
+  digitalWrite(motorPin2, pin2);
+}
+
+void motorStop()
+{
+  motorControl(LOW, LOW);
+}
+
+void motorLeft()
+{
+  motorControl(LOW, HIGH);
+}
+
+void motorRight()
+{
+  motorControl(HIGH, LOW);
 }
 
 void loop()
 {
-  // right
-  digitalWrite(motorPin1, HIGH);
-  digitalWrite(motorPin2, LOW);
+  motorRight();
   delay(wait);
-  
-  // left
-  digitalWrite(motorPin1, LOW);
-  digitalWrite(motorPin2, HIGH);
+
+  motorLeft();
   delay(wait);
-  
-  //stop
-  stopMotor();
+
+  motorStop();
   delay(wait);
-    
+
   //changing speed
-  digitalWrite(motorPin1, LOW);
-  for (int i=0; i<255; i++){
-    analogWrite(motorPin2, i);
+  for (int i = 0; i < 255; i++)
+  {
+    motorControl(LOW, i);
     delay(wait);
   }
-  for (int i=0; i<255; i++){
-    analogWrite(motorPin2, 255-i);
+  for (int i = 255; i > 0; i--)
+  {
+    motorControl(LOW, i);
     delay(wait);
   }
 }
